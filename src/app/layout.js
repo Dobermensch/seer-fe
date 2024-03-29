@@ -1,23 +1,18 @@
-'use client'
-import { Inter } from "next/font/google";
-import "./globals.css";
-import { Web3ReactProvider } from "@web3-react/core";
-import { Web3Provider } from "@ethersproject/providers";
+import "./globals.css"
 
-function getLibrary(
-  provider
-) {
-  return new Web3Provider(provider);
+import { Inter } from "next/font/google"
+
+export const metadata = {
+  title: "RPSLS",
+  description: "RPSLizardSpock",
 }
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"] })
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <Web3ReactProvider getLibrary={getLibrary}>
-        <body className={inter.className}>{children}</body>
-      </Web3ReactProvider>
+      <body className={inter.className}>{children}</body>
     </html>
-  );
+  )
 }
