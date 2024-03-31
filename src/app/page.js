@@ -36,7 +36,6 @@ function Home() {
     play: "play"
   }
   const NEXT_PUBLIC_API_ENDPOINT = process.env.NEXT_PUBLIC_API_ENDPOINT
-  const SALT_MAX_LENGTH = 10
 
   const { active, account, chainId, activate, deactivate } = useWeb3React()
   const [accountBalance, setAccountBalance] = useState(0)
