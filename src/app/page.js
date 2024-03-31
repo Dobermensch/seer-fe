@@ -1,15 +1,15 @@
 "use client"
 import { Web3ReactProvider, useWeb3React } from "@web3-react/core"
 import { useEffect, useState } from "react"
+import GameRowHeader from "./components/GameRowHeader/GameRowHeader"
 import { InjectedConnector } from "@web3-react/injected-connector"
+import RPSLSSelect from "./components/RPSLSSelect"
 import { Web3Provider } from "@ethersproject/providers"
 
 import axios from "axios"
 import contractAbi from "../../public/contract-abi.json"
 import { ethers } from "ethers"
 import styles from "./page.module.css"
-import RPSLSSelect from "./components/RPSLSSelect"
-import GameRowHeader from "./components/GameRowHeader/GameRowHeader"
 
 const injected = new InjectedConnector({})
 const getLibrary = (provider) => {
@@ -209,18 +209,11 @@ function Home() {
         return
       }
 
-      if (!playerOneSalt) {
-        alert("Please enter a password!")
-        console.error("No password set during game creation")
+      if (isNaN(playerOneSalt) || !parseFloat(playerOneSalt) || parseFloat(playerOneSalt) < 0) {
+        alert("Please enter a non-negative number as the password!")
+        console.error("Invalid set during game creation")
         return
       }
-
-      if (playerOneSalt.length > SALT_MAX_LENGTH) {
-        alert("The maximum number of characters in the password is 10!")
-        console.error("No password set during game creation")
-        return
-      }
-
 
       if (isNaN(parsedStakeAmount) || !parsedStakeAmount) {
         alert("Please enter a positive non-zero stake amount!")
@@ -241,8 +234,11 @@ function Home() {
         return
       }
 
+      // convert salt to wei to standardize floating point numbers and integers
+      const saltToWei = ethers.parseUnits(playerOneSalt, "ether")
+
       // get hash of choice
-      const hash = ethers.solidityPackedKeccak256(["uint8", "string"], [parseInt(choice), playerOneSalt])
+      const hash = ethers.solidityPackedKeccak256(["uint8", "uint256"], [parseInt(choice), saltToWei])
       const signer = await provider.getSigner()
 
       // convert stake amount to wei
@@ -295,9 +291,9 @@ function Home() {
       const choice = parseInt(userStartedGames[idx].editChoice)
       const password = userStartedGames[idx].password
 
-      if (!password) {
-        alert("Please set the password for that game!")
-        console.error(`password not set for game ${idx + 1}`)
+      if (isNaN(password) || !parseFloat(password) || parseFloat(password) < 0) {
+        alert("Please enter a non-negative number as the password!")
+        console.error("Invalid set during game creation")
         return
       }
 
@@ -307,9 +303,14 @@ function Home() {
 
       const contract = new ethers.Contract(contractAddress, contractAbi, signer)
 
-      const result = await contract.solve(choice, password)
+      // standardizing floats and ints
+      const saltToWei = ethers.parseUnits(password, "ether")
+
+      const result = await contract.solve(choice, saltToWei)
 
       alert(`tx hash: ${result.hash}`)
+
+      finishGame(idx, GAME_STATE.solve, contractAddress)
     } catch (e) {
       alert(e)
       console.error(e)
@@ -355,12 +356,7 @@ function Home() {
 
       alert(`tx hash: ${result.hash}`)
 
-      const contractStakedAmount = await contract.stake()
-
-      // loose equality checking between bigint and number
-      if (contractStakedAmount == 0) {
-        finishGame(idx, gameState, contractAddress)
-      }
+      finishGame(idx, gameState, contractAddress)      
     } catch (e) {
       alert(e)
       console.error(e)
@@ -422,14 +418,14 @@ function Home() {
             <div className={styles.createGameContainer} style={{height: "auto", padding: "10px"}}>
               <RPSLSSelect label="choice" labelText="Choice" onChangeHandler={(e) => handlerCallback(e, setChoice)} />
 
-              <label htmlFor="playerOneSalt">Enter password (10 characters max): </label>
-              <input type="text" maxLength={SALT_MAX_LENGTH} className={styles.input} onChange={(e) => handlerCallback(e, setPlayerOneSalt)} id="playerOneSalt" name="playerOneSalt" />
+              <label htmlFor="playerOneSalt">Enter password (Positive real rational number only): </label>
+              <input type="number" step="1" className={styles.input} onChange={(e) => handlerCallback(e, setPlayerOneSalt)} id="playerOneSalt" name="playerOneSalt" />
 
               <label htmlFor="playerTwoAddress">User address to play with: </label>
               <input type="text" className={styles.input} onChange={(e) => handlerCallback(e, setNewGamePlayerTwo)} id="playerTwoAddress" name="playerTwoAddress" />
 
               <label htmlFor="newGameStakeAmount">Stake amount in Eth (balance: {accountBalance} Eth): </label>
-              <input type="number" min="0" max={accountBalance} className={styles.input} onChange={(e) => handlerCallback(e, setNewGameStakeAmount)} id="newGameStakeAmount" name="newGameStakeAmount" />
+              <input type="number" step="1" min="0" max={accountBalance} className={styles.input} onChange={(e) => handlerCallback(e, setNewGameStakeAmount)} id="newGameStakeAmount" name="newGameStakeAmount" />
 
               <button disabled={createNewGameBtnDisabled} onClick={createNewGame} className={styles.createGameButton}>Create Game</button>
             </div>
@@ -456,7 +452,7 @@ function Home() {
                               <RPSLSSelect label="solveChoice" labelText="Choice" onChangeHandler={(e) => setVariableForIdx(e.target.value, GAME_STATE.solve, idx, "editChoice")} />
 
                               <label htmlFor="solveSalt">Enter password (I hope you remember it...): </label>
-                              <input type="text" maxLength={SALT_MAX_LENGTH} className={styles.input} onChange={(e) => setVariableForIdx(e.target.value, GAME_STATE.solve, idx, "password")} id="solveSalt" name="solveSalt" />
+                              <input type="number" step="1" className={styles.input} onChange={(e) => setVariableForIdx(e.target.value, GAME_STATE.solve, idx, "password")} id="solveSalt" name="solveSalt" />
 
                               <button onClick={() => solveGame(idx)} className={`${styles.createGameButton} ${styles.fullWidth}`}>Solve Game</button>
                             </div>
