@@ -3,7 +3,7 @@ import styles from "./GameRowHeader.module.css"
 export default function GameRowHeader({ contractAddress, idx, isFinished, stakeAmount, stakeAmountLabel }) {
   return (
     <div className={styles.gameRowHeader}>
-      <a href={`https://sepolia.etherscan.io/address/${contractAddress}`}>
+      <a href={`https://sepolia.etherscan.io/address/${contractAddress}`} target="_blank" rel="noopener noreferrer">
         {idx + 1}. Contract: {contractAddress}
       </a>
       {!isFinished && <div className={styles.marginLeft20}>{stakeAmountLabel}: {stakeAmount}</div>}
