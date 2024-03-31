@@ -440,7 +440,13 @@ function Home() {
                 userStartedGames.map((g, idx) => {
                   return (
                     <div className={styles.gameRow} key={idx}>
-                      <GameRowHeader contractAddress={g.contract_address} idx={idx} isFinished={g.is_finished} stakeAmount={g.contractStakeAmount} />
+                      <GameRowHeader 
+                        contractAddress={g.contract_address} 
+                        idx={idx} 
+                        isFinished={g.is_finished} 
+                        stakeAmount={g.contractStakeAmount}
+                        stakeAmountLabel={"Eth Staked"}
+                      />
 
                       {
                         !g.is_finished && (
@@ -473,7 +479,13 @@ function Home() {
                 userInvitedGames.map((g, idx) => {
                   return (
                     <div className={styles.gameRow} key={idx}>
-                      <GameRowHeader contractAddress={g.contract_address} idx={idx} isFinished={g.is_finished} stakeAmount={g.contractStakeAmount} />
+                      <GameRowHeader 
+                        contractAddress={g.contract_address} 
+                        idx={idx} 
+                        isFinished={g.is_finished} 
+                        stakeAmount={g.contractStakeAmount}
+                        stakeAmountLabel={"Min Eth Required"}
+                      />
 
                       {
                         !g.is_finished && (
