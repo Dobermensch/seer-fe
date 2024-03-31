@@ -9,6 +9,7 @@ import contractAbi from "../../public/contract-abi.json"
 import { ethers } from "ethers"
 import styles from "./page.module.css"
 import RPSLSSelect from "./components/RPSLSSelect"
+import GameRowHeader from "./components/GameRowHeader/GameRowHeader"
 
 const injected = new InjectedConnector({})
 const getLibrary = (provider) => {
@@ -439,13 +440,7 @@ function Home() {
                 userStartedGames.map((g, idx) => {
                   return (
                     <div className={styles.gameRow} key={idx}>
-                      <div className={styles.gameRowHeader}>
-                        <a href={`https://sepolia.etherscan.io/address/${g.contract_address}`}>
-                          {idx + 1}. Contract: {g.contract_address}
-                        </a>
-                        {!g.is_finished && <div className={styles.marginLeft20}>ETH Staked: {g.contractStakeAmount}</div>}
-                        {g.is_finished && <div className={styles.gameStatusPill}>Finished</div>}
-                      </div>
+                      <GameRowHeader contractAddress={g.contract_address} idx={idx} isFinished={g.is_finished} stakeAmount={g.contractStakeAmount} />
 
                       {
                         !g.is_finished && (
@@ -478,13 +473,7 @@ function Home() {
                 userInvitedGames.map((g, idx) => {
                   return (
                     <div className={styles.gameRow} key={idx}>
-                      <div className={styles.gameRowHeader}>
-                        <a href={`https://sepolia.etherscan.io/address/${g.contract_address}`}>
-                          {idx + 1}. Contract: {g.contract_address}
-                        </a>
-                        {!g.is_finished && <div className={styles.marginLeft20}>Min Eth Required: {g.contractStakeAmount}</div>}
-                        {g.is_finished && <div className={styles.gameStatusPill}>Finished</div>}
-                      </div>
+                      <GameRowHeader contractAddress={g.contract_address} idx={idx} isFinished={g.is_finished} stakeAmount={g.contractStakeAmount} />
 
                       {
                         !g.is_finished && (

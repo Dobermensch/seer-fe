@@ -1,0 +1,24 @@
+.gameRowHeader {
+  padding-left: 10px;
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+
+.gameRowHeader a { 
+  text-decoration: underline;
+}
+
+.gameStatusPill {
+  height: 30px;
+  padding: 5px 10px;
+  border-radius: 20px;
+  margin-left: 20px;
+  border: 1px solid black;
+  background-color: #4CAF50;
+  color: white;
+}
+
+.marginLeft20 {
+  margin-left: 20px;
+}
