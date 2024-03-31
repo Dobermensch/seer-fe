@@ -42,3 +42,4 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - An indicator to show when a user can call the timeouts.
 - An indicator to show who won a game
 - Add disable on solve and play game buttons while they're currently being processed
+- Make mobile friendly
