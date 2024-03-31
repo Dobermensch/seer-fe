@@ -8,8 +8,8 @@ export default function RPSLSSelect({ label, labelText, onChangeHandler }) {
           <option value="1">Rock</option>
           <option value="2">Paper</option>
           <option value="3">Scissors</option>
-          <option value="4">Lizard</option>
-          <option value="5">Spock</option>
+          <option value="4">Spock</option>
+          <option value="5">Lizard</option>
       </select>
     </>
   )

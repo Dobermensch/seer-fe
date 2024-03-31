@@ -3,8 +3,8 @@ import "./globals.css"
 import { Inter } from "next/font/google"
 
 export const metadata = {
-  title: "RPSLS",
-  description: "RPSLizardSpock",
+  title: "RPSSL",
+  description: "RPSSpockLizard",
 }
 
 const inter = Inter({ subsets: ["latin"] })

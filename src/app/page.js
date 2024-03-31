@@ -401,7 +401,7 @@ function Home() {
       </div>
 
       <div className={styles.center}>
-        RPSLizardSpock
+        RPSSpockLizard
       </div>
 
       {latestDeployedContract && (
