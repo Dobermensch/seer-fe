@@ -40,3 +40,4 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - Use a string instead of a number for the salt/password for the game when creating it to avoid player 2 be able to use rainbow tables to determine the hashed value of player 1 but this will require smart contract code change which is beyond the scope of this test.
 - Add an indicator to show that a player has played a game in which they're player 2.
 - An indicator to show when a user can call the timeouts.
+- An indicator to show who won a game
