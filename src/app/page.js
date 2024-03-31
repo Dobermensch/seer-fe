@@ -293,7 +293,7 @@ function Home() {
 
       if (isNaN(password) || !parseFloat(password) || parseFloat(password) < 0) {
         alert("Please enter a non-negative number as the password!")
-        console.error("Invalid set during game creation")
+        console.error("Invalid password set during game creation")
         return
       }
 
